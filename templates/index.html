@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+    <div class="jumbotron">
+        <h1>Bookmarked</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <p>Labels</p>
+                {% for item in labels_list %}
+                <br> {{ item.name }} {% endfor %}
+            </div>
+            <div class="col-md-9">
+                <p>All bookmarks</p>
+                {% for item in bookmark_list %}
+                <br> {{ item.name }} {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- <form action="." method="post">
+        <div class="form-group">
+            <label for="original">Original URL</label>
+            <input type="text" class="form-control" id="longurl" placeholder="Enter url" name="longurl" />
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Change URL </button>
+    </form> -->
+</div>
+{% endblock %}

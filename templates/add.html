@@ -1,0 +1,26 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+    <!-- <div class="jumbotron">
+        <h1>Bookmarked</h1>
+    </div> -->
+    <div class="col-md-9">
+        <form action="/bookmarks/add" method="post">
+            <div class="form-group">
+            {% csrf_token %}
+                <label for="original">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter url" name="name" />
+                <br>
+                <label for="original">URL</label>
+                <input type="text" class="form-control" id="url" placeholder="Enter url" name="url" />
+                <br>
+                <label for="original">Label</label>
+                <input type="text" class="form-control" id="label" placeholder="Enter url" name="label" />
+                <br>
+                <label for="original">Notes</label>
+                <input type="text" class="form-control" id="notes" placeholder="Enter url" name="notes" />
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Add Bookmark</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
