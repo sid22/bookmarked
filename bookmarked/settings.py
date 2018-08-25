@@ -14,7 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+SECRET_KEY = '^szzok3^(x%nrcd8okvy-an$9_lfbma6fu3x3ezna-*mtdu870'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -130,7 +130,6 @@ if os.environ.get('ENVIRONMENT') == None:
     MONGO_URL = 'localhost'
     MONGO_PORT = str(27017)
     MONGO_URI = "mongodb://" + MONGO_URL + ":" + MONGO_PORT + "/"
-    SECRET_KEY = '^szzok3^(x%nrcd8okvy-an$9_lfbma6fu3x3ezna-*mtdu870'
     DEBUG = True
 elif os.environ.get('ENVIRONMENT') == 'PRODUCTION':
     MONGO_USER = os.environ['MONGO_USER']
@@ -139,7 +138,6 @@ elif os.environ.get('ENVIRONMENT') == 'PRODUCTION':
     MONGO_PORT = os.environ['MONGO_PORT']
     MONGO_DBNAME = os.environ['MONGO_DBNAME']
     MONGO_URI = "mongodb://" + MONGO_USER + ":" + MONGO_PASSWORD + "@" + MONGO_URL + ":" + MONGO_PORT + "/" + MONGO_DBNAME
-    SECRET_KEY = os.environ['SECRET_KEY']
     DEBUG = False
 # MONGO_URL = 'localhost'
 # MONGO_PORT = str(27017)
