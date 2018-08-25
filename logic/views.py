@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, redirect
-from .database import db
-from bson.objectid import ObjectId
+import re
+import time
+import uuid
 
-import re, time, uuid
+from django.shortcuts import redirect, render
+
+from .database import db
+
 
 def check_url(input_url):
     a = re.match("^(http|https)://", input_url)
@@ -109,7 +112,7 @@ def edit_bookmark(request):
 def delete_bookmark(request):
     '''
     View to delete bookmark/label from it's mongo oid
-    '''    
+    '''
     delete_id = request.GET.get('id','')
     delete_table = request.GET.get('thing', '')
     delete_type = request.GET.get('type','')
