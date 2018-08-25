@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect
-from database import db
+from .database import db
 from bson.objectid import ObjectId
 
 import re, time, uuid
@@ -11,7 +11,6 @@ def check_url(input_url):
     a = re.match("^(http|https)://", input_url)
     if a:
         return input_url
-        # print "match"
     else:
         return ("http://"+input_url)
 
@@ -119,10 +118,8 @@ def delete_bookmark(request):
     elif delete_table == 'labels':
         name = db.labels.find_one_and_delete({'unique_id': delete_id})["name"]
         if delete_type == 'labelonly':
-            print "only ", name
             updates = db.bookmarks.update({'label':name}, {"$set": {'label':"Default"}}, multi=True)
         elif delete_type == 'labelandbookmarks':
-            print "also books ", name
             deletes = db.bookmarks.delete_many({"label":name})
     return redirect('index')
 
