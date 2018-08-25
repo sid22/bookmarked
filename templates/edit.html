@@ -5,10 +5,10 @@
             <div class="form-group">
             {% csrf_token %}
                 <label for="original">Name</label>
-                <input type="text" class="form-control" id="name" value={{name}} name="name" />
+                <input type="text" class="form-control" id="name" value={{name}} name="name" required/>
                 <br>
                 <label for="original">URL</label>
-                <input type="text" class="form-control" id="url" value={{url}} name="url" />
+                <input type="text" class="form-control" id="url" value={{url}} name="url" required/>
                 <br>
                 <label for="original">Label</label>
                 <select name="label" class="form-control">

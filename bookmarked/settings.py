@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '^szzok3^(x%nrcd8okvy-an$9_lfbma6fu3x3ezna-*mtdu870'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -118,5 +118,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MONGO_URI = 'localhost'
-MONGO_PORT = 27017
+# MONGO_URI = 'localhost'
+# MONGO_PORT = 27017
+
+# MONGO_USER = 'batman22'
+# MONGO_PASSWORD = 'batman22'
+
+# MONGO_URI = 'localhost'
+# MONGO_PORT = 27017
+
+MONGO_URI = "mongodb://batman22:batman22@ds022228.mlab.com:22228/bookmarked"

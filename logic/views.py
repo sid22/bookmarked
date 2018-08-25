@@ -138,7 +138,9 @@ def create_label(request):
             "name": label,
             "unique_id": str(uuid.uuid4())
         }
-        db.labels.insert(to_insert)
+        existing = db.labels.find_one({"name": label})
+        if existing == None:
+            db.labels.insert(to_insert)
         return redirect('index')
 
 def manage_label(request):

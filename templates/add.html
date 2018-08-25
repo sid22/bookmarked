@@ -8,10 +8,10 @@
             <div class="form-group">
                 {% csrf_token %}
                 <label for="original">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" />
+                <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" required/>
                 <br>
                 <label for="original">URL</label>
-                <input type="text" class="form-control" id="url" placeholder="Enter url" name="url" />
+                <input type="text" class="form-control" id="url" placeholder="Enter url" name="url" required />
                 <br>
                 <label for="original">Label</label>
                 <select name="label" class="form-control">
@@ -21,7 +21,7 @@
                 </select>
                 <br>
                 <label for="original">Notes</label>
-                <input type="text" class="form-control" id="notes" placeholder="Enter notes" name="notes" />
+                <input type="text" class="form-control" id="notes" placeholder="Enter notes" name="notes"/>
             </div>
             <button type="submit" class="btn btn-primary mb-2">Add Bookmark</button>
         </form>
