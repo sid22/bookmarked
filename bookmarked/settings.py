@@ -131,7 +131,7 @@ if os.environ.get('ENVIRONMENT') == None:
     MONGO_PORT = str(27017)
     MONGO_URI = "mongodb://" + MONGO_URL + ":" + MONGO_PORT + "/"
     DEBUG = True
-elif os.environ.get('ENVIRONMENT') == 'PRODUCTION':
+elif os.environ.get('ENVIRONMENT') == 'production':
     MONGO_USER = os.environ['MONGO_USER']
     MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
     MONGO_URL = os.environ['MONGO_URL']
