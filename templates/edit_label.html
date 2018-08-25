@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form action={% url "edit_label" %} method="post">
+                <div class="form-group">
+                    {% csrf_token %}
+                    <label for="original">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder={{name}} name="name" value={{name}} />
+                    <input type="hidden" class="form-control" value={{unique_id}} name="unique_id"/>
+                    <input type="hidden" class="form-control" value={{name}} name="old_name"/>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Edit Label</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,29 +1,32 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block content %} {% load extras %}
 <div class="container">
-    <div class="jumbotron">
-        <h1>Bookmarked</h1>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <p>Labels</p>
-                {% for item in labels_list %}
-                <br> {{ item.name }} {% endfor %}
-            </div>
-            <div class="col-md-9">
-                <p>All bookmarks</p>
-                {% for item in bookmark_list %}
-                <br> {{ item.name }} {% endfor %}
-            </div>
+    <div class="row">
+        <div class="col-md-3">
+            <p></p>
+            <hr>
+            <b>Labels</b>
+            {% for item in labels_list %}
+            <br> <a href={% url 'index' %}?label={{ item.name }} class="btn btn-light">{{ item.name }}</a>
+            {% endfor %}
+            <hr>
+            <a href={% url 'add' %} class="btn btn-warning">Add Bookmark</a>
+            <a href={% url 'create_label' %} class="btn btn-warning">Add Label</a>
+            <hr>
+            <a href={% url 'manage_label' %} class="btn btn-info">Manage Labels</a>
+        </div>
+        <div class="col-md-9">
+            {% if label_name %}
+            <b>Bookmarks for Label {{ label_name }}</b>
+            {% else %}
+            <b>All Bookmarks</b>
+            {% endif %}
+            <br><br> {% for item in bookmark_list %}
+            <a href={{item.url}}> {{ item.name }} </a>[{{item.label}}] |
+            <a href={% url 'delete' %}/?id={{item.unique_id}}&thing=bookmark>delete</a>-
+            <a href={% url "add" %}/?id={{item.unique_id}}>edit</a>
+            <br> {{ item.notes }}
+            <hr> {% endfor %}
         </div>
     </div>
-    
-    <!-- <form action="." method="post">
-        <div class="form-group">
-            <label for="original">Original URL</label>
-            <input type="text" class="form-control" id="longurl" placeholder="Enter url" name="longurl" />
-        </div>
-        <button type="submit" class="btn btn-primary mb-2">Change URL </button>
-    </form> -->
 </div>
 {% endblock %}

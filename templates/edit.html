@@ -1,17 +1,14 @@
 {% extends "base.html" %} {% block content %}
 <div class="container">
-    <!-- <div class="jumbotron">
-        <h1>Bookmarked</h1>
-    </div> -->
     <div class="col-md-9">
-        <form action="/bookmarks/add" method="post">
+        <form action={% url "edit" %} method="post">
             <div class="form-group">
-                {% csrf_token %}
+            {% csrf_token %}
                 <label for="original">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" />
+                <input type="text" class="form-control" id="name" value={{name}} name="name" />
                 <br>
                 <label for="original">URL</label>
-                <input type="text" class="form-control" id="url" placeholder="Enter url" name="url" />
+                <input type="text" class="form-control" id="url" value={{url}} name="url" />
                 <br>
                 <label for="original">Label</label>
                 <select name="label" class="form-control">
@@ -21,9 +18,10 @@
                 </select>
                 <br>
                 <label for="original">Notes</label>
-                <input type="text" class="form-control" id="notes" placeholder="Enter notes" name="notes" />
+                <input type="text" class="form-control" id="notes" name="notes" value={{notes}} />
+                <input type="hidden" class="form-control" name="unique_id" value={{id}} />
             </div>
-            <button type="submit" class="btn btn-primary mb-2">Add Bookmark</button>
+            <button type="submit" class="btn btn-primary mb-2">Edit Bookmark</button>
         </form>
     </div>
 </div>
