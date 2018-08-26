@@ -5,14 +5,17 @@
             <p></p>
             <hr>
             <b>Labels</b>
+            <br><br>
             {% for item in labels_list %}
-            <br> <a href={% url 'index' %}?label={{ item.name }} class="btn btn-light">{{ item.name }}</a>
+            <a href={% url 'index' %}?label={{ item.name }} class="btn btn-success">{{ item.name }}</a>
+            &nbsp;
             {% endfor %}
             <hr>
             <a href={% url 'add' %} class="btn btn-warning">Add Bookmark</a>
             <a href={% url 'create_label' %} class="btn btn-warning">Add Label</a>
             <hr>
             <a href={% url 'manage_label' %} class="btn btn-info">Manage Labels</a>
+            <hr>
         </div>
         <div class="col-md-9">
             {% if label_name %}
