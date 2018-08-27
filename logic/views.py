@@ -173,3 +173,6 @@ def edit_label(request):
         db.bookmarks.update({"label": old_name},{"$set": {'label': new_name}}, multi=True)
         db.labels.update({"unique_id":  unique_id}, {"$set": {'name': new_name}})
         return redirect("index")
+
+# def check_user(request):
+    
