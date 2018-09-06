@@ -94,7 +94,7 @@ elif os.environ.get('ENVIRONMENT') == 'production' or None:
     SECRET_KEY = os.environ['SECRET_KEY']
     REDIS_HOST = os.environ['REDIS_HOST']
     REDIS_PORT = os.environ['REDIS_PORT']
-    REDIS_PASSWORD = os.environ['REDIS_PORT']
+    REDIS_PASSWORD = os.environ['REDIS_PASSWORD']
     JWT_SECRET_KEY = os.environ['JWT_SECRET_KEY']
     BASE_PASSWORD = os.environ['BASE_PASSWORD']
     # CSRF_COOKIE_SECURE = True
