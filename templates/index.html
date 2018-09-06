@@ -7,7 +7,7 @@
             <b>Labels</b>
             <br><br>
             {% for item in labels_list %}
-            <a href={% url 'index' %}?label={{ item.name }} class="btn btn-success">{{ item.name }}</a>
+            <a href={% url 'index' %}?label={{ item.name }} class="btn btn-success" style="margin:1px;">{{ item.name }}</a>
             &nbsp;
             {% endfor %}
             <hr>

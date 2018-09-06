@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import datetime
 import re
 import time
 import uuid
+
 import jwt
-import datetime
-
-from django.shortcuts import redirect, render
 from django.conf import settings
+from django.shortcuts import redirect, render
 
-from .database import db, redis_connection as red
+from .database import db
+from .database import redis_connection as red
 
 
 def getepoch():
@@ -64,13 +65,16 @@ def login_view(request):
             response.set_cookie(key='token', value=authenticate_return['token'], max_age=2700000) 
             return response
     else:
-        return render(request, 'login.html')
+        context = {
+            "no_session": True
+        }
+        return render(request, 'login.html', context)
     
 def logout_view(request):
     token = str(request.COOKIES.get('token',''))
     db.auth_users.remove({"session_tok": token})
     red.delete(token)
-    response = render(request, "login.html")
+    response = redirect('login')
     response.delete_cookie('token')
     return response
 
@@ -79,7 +83,7 @@ def check_url(input_url):
     if a:
         return input_url
     else:
-        return ("http://"+input_url)
+        return ("http://" + input_url)
 
 # Create your views here.
 def index_page(request):
@@ -87,7 +91,7 @@ def index_page(request):
     View to display all the bookmarks
     '''
     if not is_authenticated(request):
-        return render(request, "login.html")
+        return redirect('login')
     label = request.GET.get('label', '')
     labels_list = list(db.labels.find({}))
     if label == '':  
@@ -96,6 +100,12 @@ def index_page(request):
             "bookmark_list": bookmark_list,
             "labels_list": labels_list
         }
+        alert_context = {
+            "alert": True,
+            "alert_type": "Success",
+            "alert_message": "You have been authenticated!"
+        }
+        context = {**context, **alert_context}
     else:
         bookmark_list = list(db.bookmarks.find({"label": label}))
         context = {
@@ -103,6 +113,12 @@ def index_page(request):
             "bookmark_list": bookmark_list,
             "labels_list": labels_list
         }
+        alert_context = {
+            "alert": True,
+            "alert_type": "success",
+            "alert_message": "You have been authenticated!"
+        }
+        context = {**context, **alert_context}
     response = render(request, "index.html", context)
     return response
 
@@ -252,6 +268,3 @@ def edit_label(request):
         db.bookmarks.update({"label": old_name},{"$set": {'label': new_name}}, multi=True)
         db.labels.update({"unique_id":  unique_id}, {"$set": {'name': new_name}})
         return redirect("index")
-
-# def check_user(request):
-    
