@@ -90,7 +90,7 @@ elif os.environ.get('ENVIRONMENT') == 'production' or None:
     MONGO_PORT = os.environ['MONGO_PORT']
     MONGO_DBNAME = os.environ['MONGO_DBNAME']
     MONGO_URI = "mongodb://" + MONGO_USER + ":" + MONGO_PASSWORD + "@" + MONGO_URL + ":" + MONGO_PORT + "/" + MONGO_DBNAME
-    DEBUG = False
+    DEBUG = True
     SECRET_KEY = os.environ['SECRET_KEY']
     REDIS_HOST = os.environ['REDIS_HOST']
     REDIS_PORT = os.environ['REDIS_PORT']
