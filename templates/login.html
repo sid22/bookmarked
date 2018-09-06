@@ -1,13 +1,13 @@
 {% extends "base.html" %} {% block content %}
 <div clas="container">
-    <div class="col-md-9 offset-md-3">
-        <form action={% url 'logib' %} method="post">
+    <div class="col-md-3 offset-md-3">
+        <form action={% url 'login' %} method="post">
             <div class="form-group">
                 {% csrf_token %}
                 <label for="original">Name</label>
                 <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required/>
             </div>
-            <button type="submit" class="btn btn-primary mb-2">Add Bookmark</button>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
         </form>
     </div>
 </div>

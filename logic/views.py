@@ -21,30 +21,58 @@ def getepoch():
 def authenticate_user(password):
     db_return = db.configs.find_one({"set_password": "yes"})
     if (password == db_return["password"]):
-        uid = uuid.uuid4()
-        token = jwt.encode({'user_id': uid, 'exp': getepoch()}, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+        uid = str(uuid.uuid4())
+        token = jwt.encode({'user_id': uid, 'exp': getepoch()}, settings.JWT_SECRET_KEY, algorithm='HS256')
         db.auth_users.insert({"session_tok": token})
-        red.set(token, 'logged')
-        return {"valid": "1", "token": token}
+        red.set(str(token), 'logged')
+        return {"valid": 1, "token": token}
     else:
-        return {"valid": "0"}
+        return {"valid": 0}
 
-def is_authenticated(token):
+def is_authenticated(request):
+    token = str(request.COOKIES.get('token',''))
     red_return = red.get(token)
-    if red_return == None or 'unlogged':
-        check = db.auth_users.find_one({"session_toke": token})
+    if red_return is None:
+        check = db.auth_users.find_one({"session_tok": token})
         if check == None:
             return False
         else:
             try:
-                jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+                jwt.decode(token, settings.JWT_SECRET_KEY, algorithm='HS256')
                 red.set(token, 'logged')
                 return True
             except jwt.ExpiredSignatureError:
                 return False
-        return False
-    elif red_return == 'logged':
+    else:
         return True
+
+def login_view(request):
+    if request.method == 'POST':
+        password = request.POST.get('password', '')
+        authenticate_return = authenticate_user(password)
+        if authenticate_return['valid'] == 0:
+            context = {
+                "error": "Incorrect password"
+            }
+            response = redirect('login')
+            return response
+        elif authenticate_return['valid'] == 1:
+            context = {
+                "success": "Succesfully authenticated"
+            }
+            response = redirect('index')
+            response.set_cookie(key='token', value=authenticate_return['token'], max_age=2700000) 
+            return response
+    else:
+        return render(request, 'login.html')
+    
+def logout_view(request):
+    token = str(request.COOKIES.get('token',''))
+    db.auth_users.remove({"session_tok": token})
+    red.delete(token)
+    response = render(request, "login.html")
+    response.delete_cookie('token')
+    return response
 
 def check_url(input_url):
     a = re.match("^(http|https)://", input_url)
@@ -58,6 +86,8 @@ def index_page(request):
     '''
     View to display all the bookmarks
     '''
+    if not is_authenticated(request):
+        return render(request, "login.html")
     label = request.GET.get('label', '')
     labels_list = list(db.labels.find({}))
     if label == '':  
@@ -74,14 +104,14 @@ def index_page(request):
             "labels_list": labels_list
         }
     response = render(request, "index.html", context)
-    response.set_cookie(key='id', value='1', max_age=2700000) 
     return response
-    # return render(request, "index.html", context)
 
 def add_bookmark(request):
     '''
     View to add a bookmark
     '''
+    if not is_authenticated(request):
+        return render(request, "login.html")
     if request.method == 'GET':
         unique_id = request.GET.get("id", '')
         if unique_id == '':
@@ -132,6 +162,8 @@ def edit_bookmark(request):
     '''
     View to edit a bookmark
     '''
+    if not is_authenticated(request):
+        return render(request, "login.html")
     url = request.POST.get('url', '')
     name = request.POST.get('name', '')
     label = request.POST.get('label', '')
@@ -152,6 +184,8 @@ def delete_bookmark(request):
     '''
     View to delete bookmark/label from it's mongo oid
     '''
+    if not is_authenticated(request):
+        return render(request, "login.html")
     delete_id = request.GET.get('id','')
     delete_table = request.GET.get('thing', '')
     delete_type = request.GET.get('type','')
@@ -169,6 +203,8 @@ def create_label(request):
     '''
     View to create a new label to be used for bookmarks
     '''
+    if not is_authenticated(request):
+        return render(request, "login.html")
     if request.method == 'GET':
         return render(request, "create_label.html")
     elif request.method == 'POST':
@@ -186,6 +222,8 @@ def manage_label(request):
     '''
     View to manage labels
     '''
+    if not is_authenticated(request):
+        return render(request, "login.html")
     if request.method == 'GET':
         labels = db.labels.find({})
         context = {
@@ -197,6 +235,8 @@ def edit_label(request):
     '''
     Edit label
     '''
+    if not is_authenticated(request):
+        return render(request, "login.html")
     if request.method == 'GET':
         unique_id = request.GET.get('id','')
         label_name = db.labels.find_one({"unique_id": unique_id})

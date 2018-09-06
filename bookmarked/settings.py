@@ -70,9 +70,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 STATIC_URL = '/static/'
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+
 
 if os.environ.get('ENVIRONMENT') == None:
     MONGO_URL = 'localhost'
@@ -99,3 +97,6 @@ elif os.environ.get('ENVIRONMENT') == 'production' or None:
     REDIS_PASSWORD = os.environ['REDIS_PORT']
     JWT_SECRET_KEY = os.environ['JWT_SECRET_KEY']
     BASE_PASSWORD = os.environ['BASE_PASSWORD']
+    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
