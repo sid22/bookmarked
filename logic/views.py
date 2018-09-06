@@ -4,11 +4,47 @@ from __future__ import unicode_literals
 import re
 import time
 import uuid
+import jwt
+import datetime
 
 from django.shortcuts import redirect, render
+from django.conf import settings
 
-from .database import db
+from .database import db, redis_connection as red
 
+
+def getepoch():
+    orig = datetime.datetime.fromtimestamp(1425917335)
+    new = orig + datetime.timedelta(days=30)
+    return new
+
+def authenticate_user(password):
+    db_return = db.configs.find_one({"set_password": "yes"})
+    if (password == db_return["password"]):
+        uid = uuid.uuid4()
+        token = jwt.encode({'user_id': uid, 'exp': getepoch()}, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+        db.auth_users.insert({"session_tok": token})
+        red.set(token, 'logged')
+        return {"valid": "1", "token": token}
+    else:
+        return {"valid": "0"}
+
+def is_authenticated(token):
+    red_return = red.get(token)
+    if red_return == None or 'unlogged':
+        check = db.auth_users.find_one({"session_toke": token})
+        if check == None:
+            return False
+        else:
+            try:
+                jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+                red.set(token, 'logged')
+                return True
+            except jwt.ExpiredSignatureError:
+                return False
+        return False
+    elif red_return == 'logged':
+        return True
 
 def check_url(input_url):
     a = re.match("^(http|https)://", input_url)
@@ -37,7 +73,10 @@ def index_page(request):
             "bookmark_list": bookmark_list,
             "labels_list": labels_list
         }
-    return render(request, "index.html", context)
+    response = render(request, "index.html", context)
+    response.set_cookie(key='id', value='1', max_age=2700000) 
+    return response
+    # return render(request, "index.html", context)
 
 def add_bookmark(request):
     '''

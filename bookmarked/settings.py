@@ -70,7 +70,9 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 STATIC_URL = '/static/'
-
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 if os.environ.get('ENVIRONMENT') == None:
     MONGO_URL = 'localhost'
@@ -78,7 +80,12 @@ if os.environ.get('ENVIRONMENT') == None:
     MONGO_URI = "mongodb://" + MONGO_URL + ":" + MONGO_PORT + "/"
     DEBUG = True
     SECRET_KEY = 'abcdef'
-elif os.environ.get('ENVIRONMENT') == 'production':
+    REDIS_HOST = 'localhost'
+    REDIS_PORT = 6379
+    REDIS_PASSWORD = ''
+    JWT_SECRET_KEY = 'siddharth'
+    BASE_PASSWORD = 'siddharth'
+elif os.environ.get('ENVIRONMENT') == 'production' or None:
     MONGO_USER = os.environ['MONGO_USER']
     MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
     MONGO_URL = os.environ['MONGO_URL']
@@ -87,3 +94,8 @@ elif os.environ.get('ENVIRONMENT') == 'production':
     MONGO_URI = "mongodb://" + MONGO_USER + ":" + MONGO_PASSWORD + "@" + MONGO_URL + ":" + MONGO_PORT + "/" + MONGO_DBNAME
     DEBUG = False
     SECRET_KEY = os.environ['SECRET_KEY']
+    REDIS_HOST = os.environ['REDIS_HOST']
+    REDIS_PORT = os.environ['REDIS_PORT']
+    REDIS_PASSWORD = os.environ['REDIS_PORT']
+    JWT_SECRET_KEY = os.environ['JWT_SECRET_KEY']
+    BASE_PASSWORD = os.environ['BASE_PASSWORD']

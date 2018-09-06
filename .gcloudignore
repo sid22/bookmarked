@@ -106,4 +106,4 @@ venv.bak/
 .DS_Store
 .vscode/
 
-app.yaml
+requirements_work.txt
