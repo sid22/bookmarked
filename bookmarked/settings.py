@@ -83,6 +83,7 @@ if os.environ.get('ENVIRONMENT') == None:
     REDIS_PASSWORD = ''
     JWT_SECRET_KEY = 'siddharth'
     BASE_PASSWORD = 'siddharth'
+    COOKIE_SECURE = False
 elif os.environ.get('ENVIRONMENT') == 'production' or None:
     MONGO_USER = os.environ['MONGO_USER']
     MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
@@ -100,3 +101,4 @@ elif os.environ.get('ENVIRONMENT') == 'production' or None:
     SECURE_SSL_REDIRECT = True
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
+    COOKIE_SECURE = True

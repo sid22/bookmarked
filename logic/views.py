@@ -62,7 +62,7 @@ def login_view(request):
                 "success": "Succesfully authenticated"
             }
             response = redirect('index')
-            response.set_cookie(key='token', value=authenticate_return['token'], max_age=2700000) 
+            response.set_cookie(key='token', value=authenticate_return['token'], max_age=2700000, secure=settings.COOKIE_SECURE) 
             return response
     else:
         context = {
@@ -127,7 +127,7 @@ def add_bookmark(request):
     View to add a bookmark
     '''
     if not is_authenticated(request):
-        return render(request, "login.html")
+        return redirect('login')
     if request.method == 'GET':
         unique_id = request.GET.get("id", '')
         if unique_id == '':
@@ -179,7 +179,7 @@ def edit_bookmark(request):
     View to edit a bookmark
     '''
     if not is_authenticated(request):
-        return render(request, "login.html")
+        return redirect('login')
     url = request.POST.get('url', '')
     name = request.POST.get('name', '')
     label = request.POST.get('label', '')
@@ -201,7 +201,7 @@ def delete_bookmark(request):
     View to delete bookmark/label from it's mongo oid
     '''
     if not is_authenticated(request):
-        return render(request, "login.html")
+        return redirect('login')
     delete_id = request.GET.get('id','')
     delete_table = request.GET.get('thing', '')
     delete_type = request.GET.get('type','')
@@ -220,7 +220,7 @@ def create_label(request):
     View to create a new label to be used for bookmarks
     '''
     if not is_authenticated(request):
-        return render(request, "login.html")
+        return redirect('login')
     if request.method == 'GET':
         return render(request, "create_label.html")
     elif request.method == 'POST':
@@ -239,7 +239,7 @@ def manage_label(request):
     View to manage labels
     '''
     if not is_authenticated(request):
-        return render(request, "login.html")
+        return redirect('login')
     if request.method == 'GET':
         labels = db.labels.find({})
         context = {
@@ -252,7 +252,7 @@ def edit_label(request):
     Edit label
     '''
     if not is_authenticated(request):
-        return render(request, "login.html")
+        return redirect('login')
     if request.method == 'GET':
         unique_id = request.GET.get('id','')
         label_name = db.labels.find_one({"unique_id": unique_id})
