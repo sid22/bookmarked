@@ -95,7 +95,7 @@ def index_page(request):
     label = request.GET.get('label', '')
     labels_list = list(db.labels.find({}))
     if label == '':  
-        bookmark_list = list(db.bookmarks.find({}))
+        bookmark_list = list(db.bookmarks.find({}))[::-1]
         context = {
             "bookmark_list": bookmark_list,
             "labels_list": labels_list
